@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-# Manipulating the MASSIVE dataset using python
+# STAR-DASH
 
 ## Quick Links
 
@@ -10,9 +10,6 @@
 
 - [Running the project](https://github.com/myles4321/stardash#running-the-project)
 
-- [Disclaimer](https://github.com/myles4321/stardash#disclaimer)
-
-- [Output files](https://github.com/myles4321/stardash#output-files)
 
 ## Introduction
 
@@ -55,16 +52,3 @@ In this project, you'll gain insights into graphic rendering, basic gameplay mec
    ```
 3. Install git bash which is usually obtained during git installation. You can begin your download of git from [here](https://git-scm.com/downloads).
 
-## Running the project
-
-Upon completing the project installation steps:
-
-1. 
-
-## Disclaimer
-
-The process of launching the game could take a few minutes.
-
-## Output files
-
-The project's output files were backed-up on Google Drive and can be accessed [here](https://drive.google.com/drive/folders/12aCT8Q7ztFkNASuDG5hMLCD6DZJMv5-G?usp=sharing).
