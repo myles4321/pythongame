@@ -3,3 +3,4 @@ src/__pycache__/
 src/functions/__pycache__/
 src/game_logic/__pycache__/
 src/classes/__pycache__/
+venv/
