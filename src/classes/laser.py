@@ -1,6 +1,3 @@
-'''
-laser.py class.
-'''
 import pygame
 import os
 from functions.utils import collide  # Import from utils
