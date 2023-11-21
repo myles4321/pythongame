@@ -1,4 +1,6 @@
-# laser.py
+'''
+laser.py class.
+'''
 import pygame
 import os
 from functions.utils import collide  # Import from utils
@@ -12,6 +14,9 @@ YELLOW_LASER = pygame.image.load(os.path.join("../assets", "pixel_laser_yellow.p
 # ... (other images)
 
 class Laser:
+    '''
+    This class is used to define the characteristics of laserbeams shot by the player and enemies. 
+    '''
     def __init__(self, x, y, img):
         self.x = x
         self.y = y
