@@ -5,12 +5,16 @@ import pygame
 import os
 import random
 from classes.ship import Player, Enemy, collide, Asteroid, WIDTH, HEIGHT, WIN, BG
+import pygame.mixer
+from classes.laser import Laser
 
 '''Inititalize pygame'''
 pygame.init()
 pygame.font.init()
 pygame.mixer.init()
 shoot_sound = pygame.mixer.Sound("../game_sounds/shoot.mp3")
+explosion_sound = pygame.mixer.Sound("../game_sounds/explosion.mp3")
+
 '''Define font variables'''
 orbitron_font_path = os.path.join(os.path.dirname(__file__), '../../fonts/orbitron.ttf')
 orbitron_font_size = 50
@@ -121,9 +125,11 @@ def main():
 
             if collide(enemy, player):
                 player.health -= 10
+                explosion_sound.play()
                 enemies.remove(enemy)
             elif enemy.y + enemy.get_height() > HEIGHT:
                 lives -= 1
+                explosion_sound.play()
                 enemies.remove(enemy)
 
         for asteroid in asteroids[:]:
