@@ -17,6 +17,8 @@ This repository contains code that promises a simple yet engaging exploration in
 
 In this project, you'll gain insights into graphic rendering, basic gameplay mechanics, and the essentials of creating a visually appealing virtual environment. The emphasis here is on simplicity, making it an ideal starting point for those venturing into the realm of WebGL Applications.
 
+The project was developed using pygame and pygame.  
+
 ## Project installation
 
 1. Open your terminal and create a virtual python environment to store all the required dependencies to run this project. The project was created using python version 3.11.5 which can be installed automatically when working with anaconda environments or can be downloaded directly from [here](https://www.python.org/ftp/python/3.11.5/python-3.11.5-amd64.exe).
@@ -72,3 +74,11 @@ C:\Users\your_username\stardash\src\python main.py
 
    ![Gameplay](https://github.com/myles4321/stardash/blob/master/screenshots/gameplay1.jpg?raw=true)
 
+## How to play
+
+
+1. Player Controls: Navigate the cosmic battlefield with the arrow keys, maneuvering your ship left, right, up, and down while unleashing  lasers with the spacebar
+
+2. Objectives: Navigate through a barrage of enemy ships and asteroids, dodging their fire and avoiding collisions, to reach the end of each level
+
+3. Game elements: Keep an eye on your Health and Lives. Health decreases when your ship gets hit by enemy fire or collides with other ships or asteroids. Lives are lost when you let enemy ships escape your firepower
