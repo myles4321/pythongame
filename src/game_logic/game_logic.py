@@ -9,6 +9,8 @@ from classes.ship import Player, Enemy, collide, Asteroid, WIDTH, HEIGHT, WIN, B
 '''Inititalize pygame'''
 pygame.init()
 pygame.font.init()
+pygame.mixer.init()
+shoot_sound = pygame.mixer.Sound("../game_sounds/shoot.mp3")
 '''Define font variables'''
 orbitron_font_path = os.path.join(os.path.dirname(__file__), '../../fonts/orbitron.ttf')
 orbitron_font_size = 50
@@ -108,6 +110,7 @@ def main():
             player.y += player_vel
         if keys[pygame.K_SPACE]:
             player.shoot()
+            shoot_sound.play()
 
         for enemy in enemies[:]:
             enemy.move(enemy_vel)
