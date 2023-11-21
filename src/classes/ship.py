@@ -1,6 +1,3 @@
-'''
-ship.py class.
-'''
 import pygame
 import os
 from classes.laser import Laser, collide
