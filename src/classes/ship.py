@@ -2,22 +2,35 @@ import pygame
 import os
 from classes.laser import Laser, collide
 
-ship_h, ship_w = 100,150
-alien_h, alien_w = 80,120
+ship_h, ship_w = 100, 150
+alien_h, alien_w = 80, 120
 # Load images
-RED_SPACE_SHIP = pygame.image.load(os.path.join("../assets", "pixel_ship_red_small.png"))
+RED_SPACE_SHIP = pygame.image.load(
+    os.path.join("../assets", "pixel_ship_red_small.png")
+)
 RED_SPACE_SHIP = pygame.transform.scale(RED_SPACE_SHIP, (alien_h, alien_w))
-GREEN_SPACE_SHIP = pygame.image.load(os.path.join("../assets", "pixel_ship_green_small.png"))
+GREEN_SPACE_SHIP = pygame.image.load(
+    os.path.join("../assets", "pixel_ship_green_small.png")
+)
 GREEN_SPACE_SHIP = pygame.transform.scale(GREEN_SPACE_SHIP, (alien_h, alien_w))
-BLUE_SPACE_SHIP = pygame.image.load(os.path.join("../assets", "pixel_ship_blue_small.png"))
+BLUE_SPACE_SHIP = pygame.image.load(
+    os.path.join("../assets", "pixel_ship_blue_small.png")
+)
 BLUE_SPACE_SHIP = pygame.transform.scale(BLUE_SPACE_SHIP, (alien_h, alien_w))
-YELLOW_SPACE_SHIP = pygame.image.load(os.path.join("../assets", "pixel_ship_yellow.png"))
+YELLOW_SPACE_SHIP = pygame.image.load(
+    os.path.join("../assets", "pixel_ship_yellow.png")
+)
 YELLOW_SPACE_SHIP = pygame.transform.scale(YELLOW_SPACE_SHIP, (ship_h, ship_w))
+ASTEROID = pygame.image.load(os.path.join("../assets", "asteroid.png"))
+ASTEROID = pygame.transform.scale(ASTEROID, (alien_h, alien_w))
 
 
 WIDTH, HEIGHT = 1080, 720
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-BG = pygame.transform.scale(pygame.image.load(os.path.join("../assets", "background-black.png")), (WIDTH, HEIGHT))
+BG = pygame.transform.scale(
+    pygame.image.load(os.path.join("../assets", "background-black.png")),
+    (WIDTH, HEIGHT),
+)
 
 # ... (other images)
 
@@ -26,6 +39,7 @@ RED_LASER = pygame.image.load(os.path.join("../assets", "pixel_laser_red.png"))
 GREEN_LASER = pygame.image.load(os.path.join("../assets", "pixel_laser_green.png"))
 BLUE_LASER = pygame.image.load(os.path.join("../assets", "pixel_laser_blue.png"))
 YELLOW_LASER = pygame.image.load(os.path.join("../assets", "pixel_laser_yellow.png"))
+
 
 class Ship:
     COOLDOWN = 30
@@ -72,6 +86,7 @@ class Ship:
     def get_height(self):
         return self.ship_img.get_height()
 
+
 class Player(Ship):
     def __init__(self, x, y, health=100):
         super().__init__(x, y, health)
@@ -98,14 +113,33 @@ class Player(Ship):
         self.healthbar(window)
 
     def healthbar(self, window):
-        pygame.draw.rect(window, (255,0,0), (self.x, self.y + self.ship_img.get_height() + 10, self.ship_img.get_width(), 10))
-        pygame.draw.rect(window, (0,255,0), (self.x, self.y + self.ship_img.get_height() + 10, self.ship_img.get_width() * (self.health/self.max_health), 10))
+        pygame.draw.rect(
+            window,
+            (255, 0, 0),
+            (
+                self.x,
+                self.y + self.ship_img.get_height() + 10,
+                self.ship_img.get_width(),
+                10,
+            ),
+        )
+        pygame.draw.rect(
+            window,
+            (0, 255, 0),
+            (
+                self.x,
+                self.y + self.ship_img.get_height() + 10,
+                self.ship_img.get_width() * (self.health / self.max_health),
+                10,
+            ),
+        )
+
 
 class Enemy(Ship):
     COLOR_MAP = {
         "red": (RED_SPACE_SHIP, RED_LASER),
         "green": (GREEN_SPACE_SHIP, GREEN_LASER),
-        "blue": (BLUE_SPACE_SHIP, BLUE_LASER)
+        "blue": (BLUE_SPACE_SHIP, BLUE_LASER),
     }
 
     def __init__(self, x, y, color, health=100):
@@ -118,6 +152,20 @@ class Enemy(Ship):
 
     def shoot(self):
         if self.cool_down_counter == 0:
-            laser = Laser(self.x-20, self.y, self.laser_img)
+            laser = Laser(self.x - 20, self.y, self.laser_img)
             self.lasers.append(laser)
             self.cool_down_counter = 1
+
+
+class Asteroid(Ship):
+    COLOR_MAP = {
+        "asteroid": ASTEROID,
+    }
+
+    def __init__(self, x, y, color, health=100):
+        super().__init__(x, y, health)
+        self.ship_img = self.COLOR_MAP[color]
+        self.mask = pygame.mask.from_surface(self.ship_img)
+
+    def move(self, vel):
+        self.y += vel
