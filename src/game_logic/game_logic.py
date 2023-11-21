@@ -6,25 +6,23 @@ import os
 import random
 from classes.ship import Player, Enemy, collide, Asteroid, WIDTH, HEIGHT, WIN, BG
 
+'''Inititalize pygame'''
 pygame.init()
 pygame.font.init()
-
+'''Define font variables'''
 orbitron_font_path = os.path.join(os.path.dirname(__file__), '../../fonts/orbitron.ttf')
 orbitron_font_size = 50
 orbitron_font = pygame.font.Font(orbitron_font_path, orbitron_font_size)
 
 
 def main():
-    '''
-    This function is used to define the gameplay mechanics of the game.
-    '''
+    '''This function is used to define the gameplay mechanics of the game.'''
     run = True
     FPS = 60
     level = 0
     lives = 10
     main_font = orbitron_font  
     lost_font = orbitron_font  
-
 
     enemies = []
     wave_length = 5
@@ -44,6 +42,7 @@ def main():
     lost_count = 0
 
     def redraw_window():
+        '''The blit funtion is used to draw all the items in the game(background, player, enemies, asteroids and all the labels such as lives and level, also you lost message)'''
         WIN.blit(BG, (0, 0))
         # draw text
         lives_label = main_font.render(f"Lives: {lives}", 1, (255, 255, 255))
@@ -136,9 +135,7 @@ def main():
         
         
 def main_menu():
-    '''
-    This function is used to generate the main menu.
-    '''
+    '''This function is used to generate the main menu.'''
     run = True
     while run:
         WIN.blit(BG, (0, 0))
