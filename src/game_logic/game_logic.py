@@ -1,21 +1,31 @@
 import pygame
 import os
 import random
-from classes.ship import Player, Enemy, collide, WIDTH, HEIGHT, WIN, BG
+from classes.ship import Player, Enemy, collide, Asteroid, WIDTH, HEIGHT, WIN, BG
 
+pygame.init()
 pygame.font.init()
+
+orbitron_font_path = os.path.join(os.path.dirname(__file__), '../../fonts/orbitron.ttf')
+orbitron_font_size = 50
+orbitron_font = pygame.font.Font(orbitron_font_path, orbitron_font_size)
+
 
 def main():
     run = True
     FPS = 60
     level = 0
-    lives = 5
-    main_font = pygame.font.SysFont("comicsans", 50)
-    lost_font = pygame.font.SysFont("comicsans", 60)
+    lives = 10
+    main_font = orbitron_font  
+    lost_font = orbitron_font  
+
 
     enemies = []
     wave_length = 5
     enemy_vel = 1
+
+    asteroids = []
+    asteroid_vel = 1
 
     player_vel = 5
     laser_vel = 5
@@ -38,6 +48,9 @@ def main():
 
         for enemy in enemies:
             enemy.draw(WIN)
+
+        for asteroid in asteroids:
+            asteroid.draw(WIN)
 
         player.draw(WIN)
 
@@ -67,6 +80,13 @@ def main():
             for i in range(wave_length):
                 enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), random.choice(["red", "blue", "green"]))
                 enemies.append(enemy)
+        
+        if len(asteroids) == 0:
+            level += 1
+            wave_length += 5
+            for i in range(wave_length):
+                asteroid = Asteroid(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), "asteroid")
+                asteroids.append(asteroid)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -98,19 +118,43 @@ def main():
                 lives -= 1
                 enemies.remove(enemy)
 
+        for asteroid in asteroids[:]:
+            asteroid.move(asteroid_vel)
+
+            if collide(asteroid, player):
+                player.health -= 10
+                asteroids.remove(asteroid)
+
+
         player.move_lasers(-laser_vel, enemies)
         
+        
 def main_menu():
-    title_font = pygame.font.SysFont("comicsans", 70)
     run = True
     while run:
-        WIN.blit(BG, (0,0))
-        title_label = title_font.render("Press the mouse to begin...", 1, (255,255,255))
-        WIN.blit(title_label, (WIDTH/2 - title_label.get_width()/2, 350))
+        WIN.blit(BG, (0, 0))
+
+        # Render and position the title "STARDASH" with a larger font size
+        title_text = orbitron_font.render("STARDASH", 1, (0, 255, 0))  # Green color
+        title_font_size = 70  # Adjust the font size
+        orbitron_large_font = pygame.font.Font(orbitron_font_path, title_font_size)
+        title_text = orbitron_large_font.render("STARDASH", 1, (0, 255, 0))  # Render with the larger font
+        title_x = WIDTH/2 - title_text.get_width()/2
+        title_y = HEIGHT/2 - title_text.get_height() - 20  # Adjust the vertical position
+        WIN.blit(title_text, (title_x, title_y))
+
+        # Render and position the sub-title "Press the mouse to begin..."
+        subtitle_text = orbitron_font.render("Press the mouse to begin...", 1, (255, 255, 255))
+        subtitle_x = WIDTH/2 - subtitle_text.get_width()/2
+        subtitle_y = HEIGHT/2 + 20  # Adjust the vertical position
+        WIN.blit(subtitle_text, (subtitle_x, subtitle_y))
+
         pygame.display.update()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 main()
+
     pygame.quit()
