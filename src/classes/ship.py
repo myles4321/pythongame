@@ -1,3 +1,6 @@
+'''
+ship.py class.
+'''
 import pygame
 import os
 from classes.laser import Laser, collide
@@ -42,6 +45,9 @@ YELLOW_LASER = pygame.image.load(os.path.join("../assets", "pixel_laser_yellow.p
 
 
 class Ship:
+    '''
+    This class defines the characteristics of ships within the game world.
+    '''
     COOLDOWN = 30
 
     def __init__(self, x, y, health=100):
@@ -88,6 +94,9 @@ class Ship:
 
 
 class Player(Ship):
+    '''
+    This class defines the characteristics of the player's ship.
+    '''
     def __init__(self, x, y, health=100):
         super().__init__(x, y, health)
         self.ship_img = YELLOW_SPACE_SHIP
@@ -136,6 +145,9 @@ class Player(Ship):
 
 
 class Enemy(Ship):
+    '''
+    This class defines the characteristics of the enemy's ship.
+    '''
     COLOR_MAP = {
         "red": (RED_SPACE_SHIP, RED_LASER),
         "green": (GREEN_SPACE_SHIP, GREEN_LASER),
@@ -158,6 +170,9 @@ class Enemy(Ship):
 
 
 class Asteroid(Ship):
+    '''
+    This class defines the characteristics of asteroids that appear within the game world.
+    '''
     COLOR_MAP = {
         "asteroid": ASTEROID,
     }

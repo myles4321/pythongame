@@ -1,3 +1,6 @@
+'''
+This module handles the game logic.
+'''
 import pygame
 import os
 import random
@@ -12,6 +15,9 @@ orbitron_font = pygame.font.Font(orbitron_font_path, orbitron_font_size)
 
 
 def main():
+    '''
+    This function is used to define the gameplay mechanics of the game.
+    '''
     run = True
     FPS = 60
     level = 0
@@ -130,6 +136,9 @@ def main():
         
         
 def main_menu():
+    '''
+    This function is used to generate the main menu.
+    '''
     run = True
     while run:
         WIN.blit(BG, (0, 0))

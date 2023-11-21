@@ -1,4 +1,6 @@
-# utils.py
+"""
+    This function is used to define collisions between objects in the game.
+"""
 def collide(obj1, obj2):
     offset_x = obj2.x - obj1.x
     offset_y = obj2.y - obj1.y
