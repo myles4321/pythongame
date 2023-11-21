@@ -62,13 +62,13 @@ C:\Users\your_username\stardash\src\python main.py
 
 1. Main Menu:
 
-   ![screenshot](screenshots\main_menu.jpg)
+   ![Main Menu](https://github.com/myles4321/stardash/blob/master/screenshots/main_menu.jpg?raw=true)
 
 2. Gameplay:
 
-   ![screenshot](screenshots\gameplay2.jpg)
+   ![Gameplay](https://github.com/myles4321/stardash/blob/master/screenshots/gameplay2.jpg?raw=true)
 
 3. Gameplay:
 
-   ![screenshot](screenshots\gameplay1.jpg)
+   ![Gameplay](https://github.com/myles4321/stardash/blob/master/screenshots/gameplay1.jpg?raw=true)
 
