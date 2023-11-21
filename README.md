@@ -52,3 +52,23 @@ In this project, you'll gain insights into graphic rendering, basic gameplay mec
    ```
 3. Install git bash which is usually obtained during git installation. You can begin your download of git from [here](https://git-scm.com/downloads).
 
+## Running the Project
+
+Open your terminal and navigate to the cloned repository. Run the command as follows editing where necesary:
+ ```{code}
+C:\Users\your_username\stardash\src\python main.py
+```
+## Gameplay screenshots
+
+1. Main Menu:
+
+   ![screenshot](screenshots\main_menu.jpg)
+
+2. Gameplay:
+
+   ![screenshot](screenshots\gameplay2.jpg)
+
+3. Gameplay:
+
+   ![screenshot](screenshots\gameplay1.jpg)
+
