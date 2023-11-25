@@ -1,7 +1,7 @@
 import pygame
 import os
 import random
-from classes.ship import Player, Enemy, collide, Asteroid, WIDTH, HEIGHT, WIN, BG
+from classes.ship import Gift, Player, Enemy, collide, Asteroid, WIDTH, HEIGHT, WIN, BG
 import pygame.mixer
 from classes.laser import Laser
 
@@ -17,7 +17,7 @@ orbitron_font = pygame.font.Font(orbitron_font_path, orbitron_font_size)
 
 background_images = [pygame.transform.scale(pygame.image.load(f"../assets/background_{i}.jpg"), (WIDTH, HEIGHT)) for i in range(1, 6)]
 
-def redraw_window(level, lives, lost, enemies, asteroids, player):
+def redraw_window(level, lives, lost, enemies, asteroids, player, gifts):
     current_bg = background_images[level % len(background_images)]
     WIN.blit(current_bg, (0, 0))
 
@@ -29,6 +29,9 @@ def redraw_window(level, lives, lost, enemies, asteroids, player):
     WIN.blit(level_label, (WIDTH - level_label.get_width() - 10, 10))
     WIN.blit(score_label, (WIDTH // 2 - score_label.get_width() // 2, 10))
 
+    for gift in gifts:
+        gift.draw(WIN)
+        
     for enemy in enemies:
         enemy.draw(WIN)
 
@@ -38,7 +41,7 @@ def redraw_window(level, lives, lost, enemies, asteroids, player):
     player.draw(WIN)
 
     if lost:
-        lost_label = orbitron_font.render("You Lost!!", 1, (255, 255, 255))
+        lost_label = orbitron_font.render("You Lost!! Your score is " + str(player.score), 1, (255, 255, 255))
         WIN.blit(lost_label, (WIDTH / 2 - lost_label.get_width() / 2, 350))
 
     pygame.display.update()
@@ -64,10 +67,14 @@ def main():
 
     lost = False
     lost_count = 0
+    
+    gifts = []
+    gift_vel = 3
+
 
     while run:
         clock.tick(FPS)
-        redraw_window(level, lives, lost, enemies, asteroids, player)
+        redraw_window(level, lives, lost, enemies, asteroids, player, gifts)
 
         if lives <= 0 or player.health <= 0:
             lost = True
@@ -90,10 +97,23 @@ def main():
             for i in range(asteroid_wave_length):
                 asteroid = Asteroid(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), "asteroid")
                 asteroids.append(asteroid)
-
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+                
+        if random.randrange(0, 10 * FPS) == 1:
+            gift = Gift(random.randrange(50, WIDTH - 100), random.randrange(-500, -100), "../assets/gift.png", 40, 40)
+            gifts.append(gift)
+
+
+        for gift in gifts[:]:
+            gift.move(gift_vel)
+            gift.draw(WIN)
+
+            if collide(gift, player):
+                player.health = min(player.health + 20, 100)
+                gifts.remove(gift)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and player.x - player_vel > 0:
