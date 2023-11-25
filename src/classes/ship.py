@@ -21,7 +21,7 @@ YELLOW_SPACE_SHIP = pygame.image.load(
     os.path.join("../assets", "pixel_ship_yellow.png")
 )
 YELLOW_SPACE_SHIP = pygame.transform.scale(YELLOW_SPACE_SHIP, (ship_h, ship_w))
-ASTEROID = pygame.image.load(os.path.join("../assets", "asteroid.png"))
+ASTEROID = pygame.image.load(os.path.join("../assets", "asteroid3.png"))
 ASTEROID = pygame.transform.scale(ASTEROID, (alien_h, alien_w))
 
 
@@ -100,6 +100,7 @@ class Player(Ship):
         self.laser_img = YELLOW_LASER
         self.mask = pygame.mask.from_surface(self.ship_img)
         self.max_health = health
+        self.score = 0
 
     def move_lasers(self, vel, objs):
         self.cooldown()
@@ -111,6 +112,7 @@ class Player(Ship):
                 for obj in objs:
                     if laser.collision(obj):
                         objs.remove(obj)
+                        self.score += 10
                         if laser in self.lasers:
                             self.lasers.remove(laser)
 

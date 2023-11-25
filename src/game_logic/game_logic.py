@@ -17,13 +17,13 @@ orbitron_font = pygame.font.Font(orbitron_font_path, orbitron_font_size)
 
 background_images = [pygame.transform.scale(pygame.image.load(f"../assets/background_{i}.jpg"), (WIDTH, HEIGHT)) for i in range(1, 6)]
 
-def redraw_window(level, lives, lost, enemies, asteroids, player, score):
+def redraw_window(level, lives, lost, enemies, asteroids, player):
     current_bg = background_images[level % len(background_images)]
     WIN.blit(current_bg, (0, 0))
 
     lives_label = orbitron_font.render(f"Lives: {lives}", 1, (255, 255, 255))
     level_label = orbitron_font.render(f"Level: {level}", 1, (255, 255, 255))
-    score_label = orbitron_font.render(f"Score: {score}", 1, (255, 255, 255))
+    score_label = orbitron_font.render(f"Score: {player.score}", 1, (255, 255, 255))
 
     WIN.blit(lives_label, (10, 10))
     WIN.blit(level_label, (WIDTH - level_label.get_width() - 10, 10))
@@ -48,7 +48,6 @@ def main():
     FPS = 60
     level = 0
     lives = 10
-    score = 0
 
     enemies = []
     wave_length = 5
@@ -57,10 +56,9 @@ def main():
     asteroids = []
     asteroid_vel = 1
 
+    player = Player(300, 630)
     player_vel = 5
     laser_vel = 5
-
-    player = Player(300, 630)
 
     clock = pygame.time.Clock()
 
@@ -69,7 +67,7 @@ def main():
 
     while run:
         clock.tick(FPS)
-        redraw_window(level, lives, lost, enemies, asteroids, player, score)
+        redraw_window(level, lives, lost, enemies, asteroids, player)
 
         if lives <= 0 or player.health <= 0:
             lost = True
@@ -88,9 +86,8 @@ def main():
                 enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), random.choice(["red", "blue", "green"]))
                 enemies.append(enemy)
 
-        if len(asteroids) == 0:
-            wave_length += 5
-            for i in range(wave_length):
+            asteroid_wave_length = 5 + level * 2
+            for i in range(asteroid_wave_length):
                 asteroid = Asteroid(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), "asteroid")
                 asteroids.append(asteroid)
 
@@ -122,7 +119,6 @@ def main():
                 player.health -= 10
                 explosion_sound.play()
                 enemies.remove(enemy)
-                score += 10
                 
             elif enemy.y + enemy.get_height() > HEIGHT:
                 lives -= 1
@@ -135,6 +131,7 @@ def main():
             if collide(asteroid, player):
                 player.health -= 10
                 asteroids.remove(asteroid)
+                explosion_sound.play()
 
         player.move_lasers(-laser_vel, enemies)
 
