@@ -70,6 +70,7 @@ def main():
     
     gifts = []
     gift_vel = 3
+    gift_images = ["../assets/gift.png", "../assets/laser_gift.png"]
 
 
     while run:
@@ -103,7 +104,9 @@ def main():
                 run = False
                 
         if random.randrange(0, 10 * FPS) == 1:
-            gift = Gift(random.randrange(50, WIDTH - 100), random.randrange(-500, -100), "../assets/gift.png", 40, 40)
+            gift_path = random.choice(gift_images)
+            gift_identifier = "laser" if "laser" in gift_path.lower() else "other"  # Identify the gift type
+            gift = Gift(random.randrange(50, WIDTH - 100), random.randrange(-500, -100), gift_path, 40, 40, gift_identifier)
             gifts.append(gift)
 
 
@@ -112,8 +115,12 @@ def main():
             gift.draw(WIN)
 
             if collide(gift, player):
-                player.health = min(player.health + 20, 100)
                 gifts.remove(gift)
+
+                if "laser" in gift.identifier.lower():
+                    player.increase_laser_power()
+
+                player.health = min(player.health + 20, 100)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and player.x - player_vel > 0:
@@ -139,6 +146,7 @@ def main():
                 player.health -= 10
                 explosion_sound.play()
                 enemies.remove(enemy)
+                player.reset_laser_power()
                 
             elif enemy.y + enemy.get_height() > HEIGHT:
                 lives -= 1
@@ -152,6 +160,7 @@ def main():
                 player.health -= 10
                 asteroids.remove(asteroid)
                 explosion_sound.play()
+                player.reset_laser_power()
 
         player.move_lasers(-laser_vel, enemies)
 
