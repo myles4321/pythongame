@@ -76,7 +76,6 @@ def main():
     gift_vel = 3
     gift_images = ["../assets/gift.png", "../assets/laser_gift.png"]
 
-
     pause = False  # Reset pause to False at the start of each iteration 
     while run:
         clock.tick(FPS)
@@ -101,7 +100,6 @@ def main():
                     pause = not pause
                 elif event.key == pygame.K_q:  # Press 'Q' to quit
                     run = False
-
         if pause:
             continue  # Skip the rest of the loop if the game is paused
             pygame.mixer.music.stop()
