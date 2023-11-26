@@ -18,7 +18,7 @@ orbitron_font = pygame.font.Font(orbitron_font_path, orbitron_font_size)
 
 background_images = [pygame.transform.scale(pygame.image.load(f"../assets/background_{i}.jpg"), (WIDTH, HEIGHT)) for i in range(1, 6)]
 
-def redraw_window(level, lives, lost, enemies, asteroids, player, gifts):
+def redraw_window(level, lives, lost, enemies, asteroids, player, gifts, paused):
     current_bg = background_images[level % len(background_images)]
     WIN.blit(current_bg, (0, 0))
     
@@ -42,7 +42,10 @@ def redraw_window(level, lives, lost, enemies, asteroids, player, gifts):
 
     player.draw(WIN)
 
-    if lost:
+    if paused:
+        paused_label = orbitron_font.render("Paused press 'p' to continue", 1, (255, 255, 255))
+        WIN.blit(paused_label, (WIDTH // 2 - paused_label.get_width() // 2, HEIGHT // 2 - paused_label.get_height() // 2))
+    elif lost:
         lost_label = orbitron_font.render("You Lost!! Your score is " + str(player.score), 1, (255, 255, 255))
         WIN.blit(lost_label, (WIDTH / 2 - lost_label.get_width() / 2, 350))
 
@@ -79,7 +82,7 @@ def main():
     pause = False  # Reset pause to False at the start of each iteration 
     while run:
         clock.tick(FPS)
-        redraw_window(level, lives, lost, enemies, asteroids, player, gifts)
+        redraw_window(level, lives, lost, enemies, asteroids, player, gifts, pause)
 
         if lives <= 0 or player.health <= 0:
             lost = True
