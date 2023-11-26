@@ -145,8 +145,8 @@ def main():
 
                 if "laser" in gift.identifier.lower():
                     player.increase_laser_power()
-
-                player.health = min(player.health + 20, 100)
+                else:
+                    player.health = min(player.health + 20, 100)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and player.x - player_vel > 0:
