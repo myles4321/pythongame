@@ -15,7 +15,7 @@ orbitron_font_path = os.path.join(os.path.dirname(__file__), '../../fonts/orbitr
 orbitron_font_size = 50
 orbitron_font = pygame.font.Font(orbitron_font_path, orbitron_font_size)
 
-background_images = [pygame.transform.scale(pygame.image.load(f"../assets/background_{i}.jpeg"), (WIDTH, HEIGHT)) for i in range(1, 6)]
+background_images = [pygame.transform.scale(pygame.image.load(f"../assets/background_{i}.jpg"), (WIDTH, HEIGHT)) for i in range(1, 6)]
 
 def redraw_window(level, lives, lost, enemies, asteroids, player, gifts):
     current_bg = background_images[level % len(background_images)]
@@ -111,7 +111,7 @@ def main():
                 enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), random.choice(["red", "blue", "green"]))
                 enemies.append(enemy)
 
-            asteroid_wave_length = 5 + level * 2
+            asteroid_wave_length = 3 + level * 2
             for i in range(asteroid_wave_length):
                 asteroid = Asteroid(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), "asteroid")
                 asteroids.append(asteroid)
@@ -197,7 +197,7 @@ def main_menu():
         title_y = HEIGHT/2 - title_text.get_height() - 20
         WIN.blit(title_text, (title_x, title_y))
 
-        subtitle_text = orbitron_font.render("Right click to begin...", 1, (255, 255, 255))
+        subtitle_text = orbitron_font.render("Left click to begin...", 1, (255, 255, 255))
         subtitle_x = WIDTH/2 - subtitle_text.get_width()/2
         subtitle_y = HEIGHT/2 + 20
         WIN.blit(subtitle_text, (subtitle_x, subtitle_y))
