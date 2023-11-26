@@ -15,11 +15,12 @@ orbitron_font_path = os.path.join(os.path.dirname(__file__), '../../fonts/orbitr
 orbitron_font_size = 50
 orbitron_font = pygame.font.Font(orbitron_font_path, orbitron_font_size)
 
-background_images = [pygame.transform.scale(pygame.image.load(f"../assets/background_{i}.jpg"), (WIDTH, HEIGHT)) for i in range(1, 6)]
+background_images = [pygame.transform.scale(pygame.image.load(f"../assets/background_{i}.jpeg"), (WIDTH, HEIGHT)) for i in range(1, 6)]
 
 def redraw_window(level, lives, lost, enemies, asteroids, player, gifts):
     current_bg = background_images[level % len(background_images)]
     WIN.blit(current_bg, (0, 0))
+    
 
     lives_label = orbitron_font.render(f"Lives: {lives}", 1, (255, 255, 255))
     level_label = orbitron_font.render(f"Level: {level}", 1, (255, 255, 255))
@@ -72,6 +73,7 @@ def main():
     gift_vel = 3
 
 
+    pause = False  # Reset pause to False at the start of each iteration 
     while run:
         clock.tick(FPS)
         redraw_window(level, lives, lost, enemies, asteroids, player, gifts)
@@ -84,7 +86,22 @@ def main():
             if lost_count > FPS * 3:
                 run = False
             else:
-                continue
+                continue    
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:  # Press 'P' to pause/unpause
+                    pause = not pause
+                elif event.key == pygame.K_q:  # Press 'Q' to quit
+                    run = False
+
+        if pause:
+            continue  # Skip the rest of the loop if the game is paused
+    
+        
 
         if len(enemies) == 0:
             level += 1
