@@ -10,6 +10,7 @@ pygame.font.init()
 pygame.mixer.init()
 shoot_sound = pygame.mixer.Sound("../game_sounds/shoot.mp3")
 explosion_sound = pygame.mixer.Sound("../game_sounds/explosion.mp3")
+game_music = pygame.mixer.Sound("../game_sounds/game.mp3")
 
 orbitron_font_path = os.path.join(os.path.dirname(__file__), '../../fonts/orbitron.ttf')
 orbitron_font_size = 50
@@ -48,6 +49,8 @@ def redraw_window(level, lives, lost, enemies, asteroids, player, gifts):
     pygame.display.update()
 
 def main():
+    pygame.mixer.music.load("../game_sounds/game.mp3")
+    pygame.mixer.music.play(-1)  
     run = True
     FPS = 60
     level = 0
@@ -101,6 +104,7 @@ def main():
 
         if pause:
             continue  # Skip the rest of the loop if the game is paused
+            pygame.mixer.music.stop()
     
         
 
@@ -119,6 +123,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+                pygame.mixer.music.stop()
                 
         if random.randrange(0, 10 * FPS) == 1:
             gift_path = random.choice(gift_images)
@@ -180,8 +185,12 @@ def main():
                 player.reset_laser_power()
 
         player.move_lasers(-laser_vel, enemies)
+    
 
 def main_menu():
+    pygame.mixer.music.load("../game_sounds/main_menu.mp3")
+    pygame.mixer.music.play(-1)  
+
     run = True
     while run:
         WIN.blit(BG, (0, 0))
@@ -193,13 +202,13 @@ def main_menu():
         title_font_size = 70
         orbitron_large_font = pygame.font.Font(orbitron_font_path, title_font_size)
         title_text = orbitron_large_font.render("STARDASH", 1, (0, 255, 0))
-        title_x = WIDTH/2 - title_text.get_width()/2
-        title_y = HEIGHT/2 - title_text.get_height() - 20
+        title_x = WIDTH / 2 - title_text.get_width() / 2
+        title_y = HEIGHT / 2 - title_text.get_height() - 20
         WIN.blit(title_text, (title_x, title_y))
 
         subtitle_text = orbitron_font.render("Left click to begin...", 1, (255, 255, 255))
-        subtitle_x = WIDTH/2 - subtitle_text.get_width()/2
-        subtitle_y = HEIGHT/2 + 20
+        subtitle_x = WIDTH / 2 - subtitle_text.get_width() / 2
+        subtitle_y = HEIGHT / 2 + 20
         WIN.blit(subtitle_text, (subtitle_x, subtitle_y))
 
         pygame.display.update()
@@ -208,6 +217,8 @@ def main_menu():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Check for right-click
+                pygame.mixer.music.stop()  
                 main()
 
     pygame.quit()
+
