@@ -94,17 +94,24 @@ class Player(Ship):
     '''
     This class defines the characteristics of the player's ship.
     '''
-    def __init__(self, x, y, health=100):
+    def __init__(self, x, y, health=100, laser_power=1):
         super().__init__(x, y, health)
         self.ship_img = YELLOW_SPACE_SHIP
         self.laser_img = YELLOW_LASER
         self.mask = pygame.mask.from_surface(self.ship_img)
         self.max_health = health
         self.score = 0
+        self.laser_power = 0
+        
+    def increase_laser_power(self):
+        self.laser_power += 1
 
+    def reset_laser_power(self):
+        self.laser_power = 1
+        
     def move_lasers(self, vel, objs):
         self.cooldown()
-        for laser in self.lasers:
+        for laser in self.lasers[:]:
             laser.move(vel)
             if laser.off_screen(HEIGHT):
                 self.lasers.remove(laser)
@@ -115,6 +122,12 @@ class Player(Ship):
                         self.score += 10
                         if laser in self.lasers:
                             self.lasers.remove(laser)
+                            
+                            if self.laser_power > 1:
+                                for _ in range(self.laser_power - 1):
+                                    extra_laser = Laser(self.x + self.ship_img.get_width() // 2, self.y, self.laser_img)
+                                    extra_laser.move(vel)
+                                    self.lasers.append(extra_laser)
 
     def draw(self, window):
         super().draw(window)
@@ -141,6 +154,18 @@ class Player(Ship):
                 10,
             ),
         )
+    
+    def shoot(self):
+        if self.cool_down_counter == 0:
+            laser = Laser(self.x + self.ship_img.get_width() // 26, self.y, self.laser_img)
+            self.lasers.append(laser)
+
+            # Adjust the number of lasers based on laser power
+            for i in range(1, self.laser_power):
+                extra_laser = Laser(self.x + self.ship_img.get_width() // 26 - i * 10, self.y -16 * 10, self.laser_img)
+                self.lasers.append(extra_laser)
+
+            self.cool_down_counter = 1
 
 
 class Enemy(Ship):
@@ -185,12 +210,13 @@ class Asteroid(Ship):
         self.y += vel
         
 class Gift:
-    def __init__(self, x, y, img_path, width, height):
+    def __init__(self, x, y, img_path, width, height, identifier):
         self.x = x
         self.y = y
 
         self.img = pygame.transform.scale(pygame.image.load(img_path), (width, height))
         self.mask = pygame.mask.from_surface(self.img)
+        self.identifier = identifier
 
     def draw(self, window):
         window.blit(self.img, (self.x, self.y))
