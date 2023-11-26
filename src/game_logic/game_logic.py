@@ -8,8 +8,8 @@ from classes.laser import Laser
 pygame.init()
 pygame.font.init()
 pygame.mixer.init()
-shoot_sound = pygame.mixer.Sound("../game_sounds/shoot.mp3")
-explosion_sound = pygame.mixer.Sound("../game_sounds/explosion.mp3")
+shoot_sound = pygame.mixer.Sound("../game_sounds/shoot.wav")
+explosion_sound = pygame.mixer.Sound("../game_sounds/explosion.wav")
 game_music = pygame.mixer.Sound("../game_sounds/game.mp3")
 
 orbitron_font_path = os.path.join(os.path.dirname(__file__), '../../fonts/orbitron.ttf')
