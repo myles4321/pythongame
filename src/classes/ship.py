@@ -4,6 +4,7 @@ from classes.laser import Laser, collide
 
 ship_h, ship_w = 100, 150
 alien_h, alien_w = 80, 120
+asteroid_h, asteroid_w = 50, 80
 # Load images
 RED_SPACE_SHIP = pygame.image.load(
     os.path.join("../assets", "pixel_ship_red_small.png")
@@ -21,8 +22,8 @@ YELLOW_SPACE_SHIP = pygame.image.load(
     os.path.join("../assets", "pixel_ship_yellow.png")
 )
 YELLOW_SPACE_SHIP = pygame.transform.scale(YELLOW_SPACE_SHIP, (ship_h, ship_w))
-ASTEROID = pygame.image.load(os.path.join("../assets", "asteroid3.png"))
-ASTEROID = pygame.transform.scale(ASTEROID, (alien_h, alien_w))
+ASTEROID = pygame.image.load(os.path.join("../assets", "asteroid.png"))
+ASTEROID = pygame.transform.scale(ASTEROID, (asteroid_h, asteroid_w))
 
 
 WIDTH, HEIGHT = 1080, 720
