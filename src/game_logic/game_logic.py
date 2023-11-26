@@ -111,10 +111,14 @@ def main():
         if len(enemies) == 0:
             level += 1
             wave_length += 5
+            # Increase enemy velocity with each level
+            enemy_vel += 0.5
             for i in range(wave_length):
                 enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), random.choice(["red", "blue", "green"]))
                 enemies.append(enemy)
 
+            # Increase asteroid velocity with each level
+            asteroid_vel += 0.3
             asteroid_wave_length = 3 + level * 2
             for i in range(asteroid_wave_length):
                 asteroid = Asteroid(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), "asteroid")
