@@ -25,9 +25,12 @@ YELLOW_SPACE_SHIP = pygame.transform.scale(YELLOW_SPACE_SHIP, (ship_h, ship_w))
 ASTEROID = pygame.image.load(os.path.join("../assets", "asteroid.png"))
 ASTEROID = pygame.transform.scale(ASTEROID, (asteroid_h, asteroid_w))
 
+pygame.init()
+os.environ['SDL_VIDEO_CENTERED'] = '1'
+info = pygame.display.Info()
 
-WIDTH, HEIGHT = 1080, 720
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+WIDTH, HEIGHT = info.current_w, info.current_h
+WIN = pygame.display.set_mode((WIDTH-10, HEIGHT-50), pygame.RESIZABLE)
 BG = pygame.transform.scale(
     pygame.image.load(os.path.join("../assets", "background-black.png")),
     (WIDTH, HEIGHT),
