@@ -79,6 +79,7 @@ def main():
     gift_vel = 3
     gift_images = ["../assets/gift.png", "../assets/laser_gift.png"]
 
+
     pause = False  # Reset pause to False at the start of each iteration 
     while run:
         clock.tick(FPS)
@@ -103,6 +104,7 @@ def main():
                     pause = not pause
                 elif event.key == pygame.K_q:  # Press 'Q' to quit
                     run = False
+
         if pause:
             continue  # Skip the rest of the loop if the game is paused
             pygame.mixer.music.stop()
@@ -192,7 +194,24 @@ def main():
         player.move_lasers(-laser_vel, enemies)
     
 
-def main_menu():
+def main_menu(current_user):
+
+    print(f"Welcome, {current_user}!")
+
+    print("1. Dash")
+    print("2. Logout")
+
+    choice = input("Enter your choice: ")
+    
+    if choice == "1":
+        play(current_user)
+    elif choice == "2":
+        print("Logging out...")
+    else:
+        print("Invalid choice. Please try again.")
+def play(current_user):
+    print(f"{current_user}")
+
     pygame.mixer.music.load("../game_sounds/main_menu.mp3")
     pygame.mixer.music.play(-1)  
 
