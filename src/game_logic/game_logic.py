@@ -8,6 +8,8 @@ from classes.laser import Laser
 pygame.init()
 pygame.font.init()
 pygame.mixer.init()
+power_sound = pygame.mixer.Sound("../game_sounds/power.mp3")
+health_sound = pygame.mixer.Sound("../game_sounds/health.mp3")
 shoot_sound = pygame.mixer.Sound("../game_sounds/shoot.wav")
 explosion_sound = pygame.mixer.Sound("../game_sounds/explosion.wav")
 game_music = pygame.mixer.Sound("../game_sounds/game.mp3")
@@ -145,8 +147,10 @@ def main():
                 gifts.remove(gift)
 
                 if "laser" in gift.identifier.lower():
+                    power_sound.play()
                     player.increase_laser_power()
                 else:
+                    health_sound.play()
                     player.health = min(player.health + 20, 100)
 
         keys = pygame.key.get_pressed()
@@ -201,7 +205,7 @@ def main_menu():
         WIN.blit(BG, (0, 0))
 
         title_text = orbitron_font.render("STARDASH", 1, (0, 255, 0))
-        title_font_size = 70
+        title_font_size = 100
         orbitron_large_font = pygame.font.Font(orbitron_font_path, title_font_size)
         title_text = orbitron_font.render("STARDASH", 1, (0, 255, 0))
         title_font_size = 70

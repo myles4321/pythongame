@@ -32,7 +32,7 @@ info = pygame.display.Info()
 WIDTH, HEIGHT = info.current_w, info.current_h
 WIN = pygame.display.set_mode((WIDTH-10, HEIGHT-50), pygame.RESIZABLE)
 BG = pygame.transform.scale(
-    pygame.image.load(os.path.join("../assets", "background-black.png")),
+    pygame.image.load(os.path.join("../assets", "main_menu.jpg")),
     (WIDTH, HEIGHT),
 )
 
