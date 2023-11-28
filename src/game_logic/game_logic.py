@@ -115,16 +115,15 @@ def main():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-                elif event.key == pygame.K_a:
-                    player.x = 0
-                elif event.key == pygame.K_d:
-                    player.x = WIDTH - player.get_width()
-
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:  # Press 'P' to pause/unpause
                         pause = not pause
                     elif event.key == pygame.K_q:  # Press 'Q' to quit
                         run = False
+                    elif event.key == pygame.K_a:
+                        player.x = 0
+                    elif event.key == pygame.K_d:
+                        player.x = WIDTH - player.get_width()
 
             if pause:
                 continue  # Skip the rest of the loop if the game is paused
