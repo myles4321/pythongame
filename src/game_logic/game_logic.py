@@ -23,7 +23,15 @@ title_font_size = 85
 orbitron_font = pygame.font.Font(orbitron_font_path, orbitron_font_size)
 title_font = pygame.font.Font(orbitron_font_path, title_font_size)
 
-background_images = [pygame.transform.scale(pygame.image.load(f"../assets/background_{i}.jpg"), (WIDTH, HEIGHT)) for i in range(1, 6)]
+background_images = [pygame.transform.scale(pygame.image.load(f"../assets/background_{i}.jpg"), (WIDTH, HEIGHT)) for i in range(1, 12)]
+
+lives_h, lives_w = 50, 50
+
+# Load images
+LIVES = pygame.image.load(
+    os.path.join("../assets", "lives.png")
+)
+LIVES = pygame.transform.scale(LIVES, (lives_h, lives_w))
 
 TRANSPARENT_GREY = (128, 128, 128, 128)
 
@@ -37,6 +45,10 @@ def redraw_window(level, lives, lost, enemies, asteroids, player, gifts, paused)
     score_label = orbitron_font.render(f"Score: {player.score}", 1, (255, 255, 255))
 
     WIN.blit(lives_label, (10, 10))
+
+    lives_image_rect = LIVES.get_rect()
+    WIN.blit(LIVES, (10 + lives_label.get_width() + 5, 10 + (lives_label.get_height() - lives_image_rect.height) // 2))
+
     WIN.blit(level_label, (WIDTH - level_label.get_width() - 10, 10))
     WIN.blit(score_label, (WIDTH // 2 - score_label.get_width() // 2, 10))
 
