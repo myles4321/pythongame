@@ -14,6 +14,9 @@ explosion_sound = pygame.mixer.Sound("../game_sounds/explosion.wav")
 game_music = pygame.mixer.Sound("../game_sounds/game.mp3")
 pause_music = pygame.mixer.Sound("../game_sounds/pause.mp3")
 
+volume_level = 0.5
+pause_music.set_volume(volume_level)
+
 orbitron_font_path = os.path.join(os.path.dirname(__file__), '../../fonts/orbitron.ttf')
 orbitron_font_size = 50
 title_font_size = 85
@@ -49,9 +52,15 @@ def redraw_window(level, lives, lost, enemies, asteroids, player, gifts, paused)
     player.draw(WIN)
 
     if paused:
-        pause()
-        #paused_label = orbitron_font.render("Paused: press 'p' to continue", 1, (255, 255, 255))
+        #pause()
+        #paused_label = orbitron_font.render("Paused: press 'p' to continue", 1, (0, 255, 0))
         #WIN.blit(paused_label, (WIDTH // 2 - paused_label.get_width() // 2, HEIGHT // 2 - paused_label.get_height() // 2))
+        overlay_surface = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+        overlay_surface.fill((128, 128, 128, 128))  # 128 is the alpha (transparency) value
+        WIN.blit(overlay_surface, (0, 0))
+
+        paused_label = orbitron_font.render("Paused: press 'p' to continue", 1, (0, 255, 0))
+        WIN.blit(paused_label, (WIDTH // 2 - paused_label.get_width() // 2, HEIGHT // 2 - paused_label.get_height() // 2))
     elif lost:
         lost_label = orbitron_font.render("Game Over! Your score is " + str(player.score), 1, (255, 255, 255))
         WIN.blit(lost_label, (WIDTH / 2 - lost_label.get_width() / 2, 350))
@@ -61,6 +70,7 @@ def redraw_window(level, lives, lost, enemies, asteroids, player, gifts, paused)
 def scores():
     pass
 
+"""
 def pause():
     #pass
     pygame.display.set_caption("Pause menu")
@@ -102,7 +112,8 @@ def pause():
         for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-    pause()    
+    pause()
+"""    
 
 def guide():
     pass
@@ -175,8 +186,22 @@ def main():
                         player.x = WIDTH - player.get_width()
 
             if pause:
-                continue  # Skip the rest of the loop if the game is paused
-                
+                # Pause the game music
+                pygame.mixer.music.pause()
+
+                # Play the pause music if it's not already playing
+                if not pygame.mixer.get_busy():
+                    pause_music.play()
+
+                continue
+            else:
+                # Unpause the game music
+                pygame.mixer.music.unpause()
+
+                # Stop the pause music if it's playing
+                if pygame.mixer.get_busy():
+                    pause_music.stop()
+
             if len(enemies) == 0:
                 level += 1
                 wave_length += 5
