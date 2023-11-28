@@ -4,3 +4,4 @@ src/functions/__pycache__/
 src/game_logic/__pycache__/
 src/classes/__pycache__/
 venv/
+src/user_credentials.json
