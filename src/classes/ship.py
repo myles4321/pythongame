@@ -4,7 +4,7 @@ from classes.laser import Laser, collide
 
 ship_h, ship_w = 100, 150
 alien_h, alien_w = 80, 120
-asteroid_h, asteroid_w = 180, 180
+asteroid_h, asteroid_w = 200, 200
 
 # Load images
 RED_SPACE_SHIP = pygame.image.load(
@@ -109,11 +109,52 @@ class Player(Ship):
         self.laser_power = 0
         
     def increase_laser_power(self):
-        self.laser_power += 1
+        #self.laser_power += 1
+        if self.cool_down_counter == 0:
+            laser1 = Laser(self.x - 50, self.y, self.laser_img)
+            self.lasers.append(laser1)
+            laser2 = Laser(self.x - 100, self.y, self.laser_img)
+            self.lasers.append(laser2)
+            laser3 = Laser(self.x - 150, self.y, self.laser_img)
+            self.lasers.append(laser3)
+            laser4 = Laser(self.x - 200, self.y, self.laser_img)
+            self.lasers.append(laser4)
+            laser5 = Laser(self.x - 250, self.y, self.laser_img)
+            self.lasers.append(laser5)
+            laser6 = Laser(self.x - 300, self.y, self.laser_img)
+            self.lasers.append(laser6)
+            laser7 = Laser(self.x - 350, self.y, self.laser_img)
+            self.lasers.append(laser7)
+            laser8 = Laser(self.x - 400, self.y, self.laser_img)
+            self.lasers.append(laser8)
+            laser9 = Laser(self.x - 450, self.y, self.laser_img)
+            self.lasers.append(laser9)
+            laser10 = Laser(self.x - 500, self.y, self.laser_img)
+            self.lasers.append(laser10)
+            laser11 = Laser(self.x + 50, self.y, self.laser_img)
+            self.lasers.append(laser11)
+            laser12 = Laser(self.x + 100, self.y, self.laser_img)
+            self.lasers.append(laser12)
+            laser13 = Laser(self.x + 150, self.y, self.laser_img)
+            self.lasers.append(laser13)
+            laser14 = Laser(self.x + 200, self.y, self.laser_img)
+            self.lasers.append(laser14)
+            laser15 = Laser(self.x + 250, self.y, self.laser_img)
+            self.lasers.append(laser15)
+            laser16 = Laser(self.x + 300, self.y, self.laser_img)
+            self.lasers.append(laser16)
+            laser17 = Laser(self.x + 350, self.y, self.laser_img)
+            self.lasers.append(laser17)
+            laser18 = Laser(self.x + 400, self.y, self.laser_img)
+            self.lasers.append(laser18)
+            laser19 = Laser(self.x + 450, self.y, self.laser_img)
+            self.lasers.append(laser19)
+            laser20 = Laser(self.x + 500, self.y, self.laser_img)
+            self.lasers.append(laser20)
 
     def reset_laser_power(self):
         self.laser_power = 1
-        
+          
     def move_lasers(self, vel, objs):
         self.cooldown()
         for laser in self.lasers[:]:

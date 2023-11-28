@@ -64,9 +64,6 @@ def redraw_window(level, lives, lost, enemies, asteroids, player, gifts, paused)
     player.draw(WIN)
 
     if paused:
-        #pause()
-        #paused_label = orbitron_font.render("Paused: press 'p' to continue", 1, (0, 255, 0))
-        #WIN.blit(paused_label, (WIDTH // 2 - paused_label.get_width() // 2, HEIGHT // 2 - paused_label.get_height() // 2))
         overlay_surface = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
         overlay_surface.fill((128, 128, 128, 128))  # 128 is the alpha (transparency) value
         WIN.blit(overlay_surface, (0, 0))
@@ -81,51 +78,6 @@ def redraw_window(level, lives, lost, enemies, asteroids, player, gifts, paused)
 
 def scores():
     pass
-
-"""
-def pause():
-    #pass
-    pygame.display.set_caption("Pause menu")
-    
-    run = True
-    while run:
-        tinted_surface = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
-        tinted_surface.fill(TRANSPARENT_GREY)
-        WIN.blit(tinted_surface, (0, 0))
-
-        MENU_MOUSE_POS = pygame.mouse.get_pos()
-
-        MENU_TEXT = title_font.render("PAUSE MENU", True, "White")
-        MENU_RECT = MENU_TEXT.get_rect(center=(640, 150))
-
-        PLAY_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 300), 
-                            text_input="BACK TO GAME", font=orbitron_font, base_color="White", hovering_color="#4CBB17")
-        QUIT_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 450), 
-                            text_input="QUIT GAME", font=orbitron_font, base_color="White", hovering_color="#4CBB17")
-
-        WIN.blit(MENU_TEXT, MENU_RECT)
-
-        for button in [PLAY_BUTTON, QUIT_BUTTON]:
-            button.changeColor(MENU_MOUSE_POS)
-            button.update(WIN)
-        
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    run = False
-                if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    main_menu()
-
-        pygame.display.update()
-
-        for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    run = False
-    pause()
-"""    
 
 def guide():
     pass
