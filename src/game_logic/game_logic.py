@@ -12,6 +12,10 @@ health_sound = pygame.mixer.Sound("../game_sounds/health.mp3")
 shoot_sound = pygame.mixer.Sound("../game_sounds/shoot.wav")
 explosion_sound = pygame.mixer.Sound("../game_sounds/explosion.wav")
 game_music = pygame.mixer.Sound("../game_sounds/game.mp3")
+pause_music = pygame.mixer.Sound("../game_sounds/pause.mp3")
+
+volume_level = 0.5
+pause_music.set_volume(volume_level)
 
 orbitron_font_path = os.path.join(os.path.dirname(__file__), '../../fonts/orbitron.ttf')
 orbitron_font_size = 50
@@ -19,7 +23,17 @@ title_font_size = 85
 orbitron_font = pygame.font.Font(orbitron_font_path, orbitron_font_size)
 title_font = pygame.font.Font(orbitron_font_path, title_font_size)
 
-background_images = [pygame.transform.scale(pygame.image.load(f"../assets/background_{i}.jpg"), (WIDTH, HEIGHT)) for i in range(1, 6)]
+background_images = [pygame.transform.scale(pygame.image.load(f"../assets/background_{i}.jpg"), (WIDTH, HEIGHT)) for i in range(1, 12)]
+
+lives_h, lives_w = 50, 50
+
+# Load images
+LIVES = pygame.image.load(
+    os.path.join("../assets", "lives.png")
+)
+LIVES = pygame.transform.scale(LIVES, (lives_h, lives_w))
+
+TRANSPARENT_GREY = (128, 128, 128, 128)
 
 def redraw_window(level, lives, lost, enemies, asteroids, player, gifts, paused):
     current_bg = background_images[level % len(background_images)]
@@ -31,6 +45,10 @@ def redraw_window(level, lives, lost, enemies, asteroids, player, gifts, paused)
     score_label = orbitron_font.render(f"Score: {player.score}", 1, (255, 255, 255))
 
     WIN.blit(lives_label, (10, 10))
+
+    lives_image_rect = LIVES.get_rect()
+    WIN.blit(LIVES, (10 + lives_label.get_width() + 5, 10 + (lives_label.get_height() - lives_image_rect.height) // 2))
+
     WIN.blit(level_label, (WIDTH - level_label.get_width() - 10, 10))
     WIN.blit(score_label, (WIDTH // 2 - score_label.get_width() // 2, 10))
 
@@ -46,7 +64,11 @@ def redraw_window(level, lives, lost, enemies, asteroids, player, gifts, paused)
     player.draw(WIN)
 
     if paused:
-        paused_label = orbitron_font.render("Paused: press 'p' to continue", 1, (255, 255, 255))
+        overlay_surface = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+        overlay_surface.fill((128, 128, 128, 128))  # 128 is the alpha (transparency) value
+        WIN.blit(overlay_surface, (0, 0))
+
+        paused_label = orbitron_font.render("Paused: press 'p' to continue", 1, (0, 255, 0))
         WIN.blit(paused_label, (WIDTH // 2 - paused_label.get_width() // 2, HEIGHT // 2 - paused_label.get_height() // 2))
     elif lost:
         lost_label = orbitron_font.render("Game Over! Your score is " + str(player.score), 1, (255, 255, 255))
@@ -54,10 +76,7 @@ def redraw_window(level, lives, lost, enemies, asteroids, player, gifts, paused)
 
     pygame.display.update()
 
-def profile():
-    pass
-
-def pause():
+def scores():
     pass
 
 def guide():
@@ -74,7 +93,7 @@ def main():
         run = True
         FPS = 60
         level = 0
-        lives = 10
+        lives = 3
 
         enemies = []
         wave_length = 5
@@ -102,7 +121,11 @@ def main():
             clock.tick(FPS)
             redraw_window(level, lives, lost, enemies, asteroids, player, gifts, pause)
 
-            if lives <= 0 or player.health <= 0:
+            if player.health <= 0:
+                lives -= 1
+                player.health = 100 
+
+            if lives <= 0:
                 lost = True
                 lost_count += 1
 
@@ -115,6 +138,7 @@ def main():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_p:  # Press 'P' to pause/unpause
                         pause = not pause
@@ -126,10 +150,21 @@ def main():
                         player.x = WIDTH - player.get_width()
 
             if pause:
-                continue  # Skip the rest of the loop if the game is paused
-                pause()
-        
-            
+                # Pause the game music
+                pygame.mixer.music.pause()
+
+                # Play the pause music if it's not already playing
+                if not pygame.mixer.get_busy():
+                    pause_music.play()
+
+                continue
+            else:
+                # Unpause the game music
+                pygame.mixer.music.unpause()
+
+                # Stop the pause music if it's playing
+                if pygame.mixer.get_busy():
+                    pause_music.stop()
 
             if len(enemies) == 0:
                 level += 1
@@ -200,8 +235,6 @@ def main():
                     player.reset_laser_power()
                     
                 elif enemy.y + enemy.get_height() > HEIGHT:
-                    lives -= 1
-                    explosion_sound.play()
                     enemies.remove(enemy)
 
             for asteroid in asteroids[:]:
@@ -259,8 +292,8 @@ def main_menu():
 
         PLAY_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 225), 
                             text_input="PLAY", font=orbitron_font, base_color="White", hovering_color="#4CBB17")
-        PROFILE_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 375), 
-                            text_input="MY PROFILE", font=orbitron_font, base_color="White", hovering_color="#4CBB17")
+        SCORES_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 375), 
+                            text_input="SCORES", font=orbitron_font, base_color="White", hovering_color="#4CBB17")
         GUIDE_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 525), 
                             text_input="HOW TO PLAY", font=orbitron_font, base_color="White", hovering_color="#4CBB17")
         QUIT_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 675), 
@@ -268,7 +301,7 @@ def main_menu():
 
         WIN.blit(MENU_TEXT, MENU_RECT)
 
-        for button in [PLAY_BUTTON, PROFILE_BUTTON, GUIDE_BUTTON, QUIT_BUTTON]:
+        for button in [PLAY_BUTTON, SCORES_BUTTON, GUIDE_BUTTON, QUIT_BUTTON]:
             button.changeColor(MENU_MOUSE_POS)
             button.update(WIN)
         
@@ -279,8 +312,8 @@ def main_menu():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
                     main()
-                if PROFILE_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    profile()
+                if SCORES_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    scores()
                 if GUIDE_BUTTON.checkForInput(MENU_MOUSE_POS):
                     guide()
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
@@ -294,44 +327,6 @@ def main_menu():
                     run = False
 main_menu()    
 
-"""
-def play():    #can remove to implement sessions
-    pygame.display.set_caption("Stardash")
-    
-    while True:
-        pygame.mixer.music.load("../game_sounds/main_menu.mp3")
-        pygame.mixer.music.play(-1)  
 
-        run = True
-        while run:
-            WIN.blit(BG, (0, 0))
-
-            title_text = orbitron_font.render("STARDASH", 1, (0, 255, 0))
-            title_font_size = 100
-            orbitron_large_font = pygame.font.Font(orbitron_font_path, title_font_size)
-            title_text = orbitron_font.render("STARDASH", 1, (0, 255, 0))
-            title_font_size = 70
-            orbitron_large_font = pygame.font.Font(orbitron_font_path, title_font_size)
-            title_text = orbitron_large_font.render("STARDASH", 1, (0, 255, 0))
-            title_x = WIDTH / 2 - title_text.get_width() / 2
-            title_y = HEIGHT / 2 - title_text.get_height() - 20
-            WIN.blit(title_text, (title_x, title_y))
-
-            subtitle_text = orbitron_font.render("Left click to begin...", 1, (255, 255, 255))
-            subtitle_x = WIDTH / 2 - subtitle_text.get_width() / 2
-            subtitle_y = HEIGHT / 2 + 20
-            WIN.blit(subtitle_text, (subtitle_x, subtitle_y))
-
-            pygame.display.update()
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    run = False
-                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Check for right-click
-                    pygame.mixer.music.stop()  
-                    main()
-
-        pygame.quit()
-"""
 
 
