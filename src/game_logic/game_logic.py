@@ -106,6 +106,10 @@ def main():
                     pause = not pause
                 elif event.key == pygame.K_q:  # Press 'Q' to quit
                     run = False
+                elif event.key == pygame.K_a:
+                    player.x = 0
+                elif event.key == pygame.K_d:
+                    player.x = WIDTH - player.get_width()
 
         if pause:
             continue  # Skip the rest of the loop if the game is paused
