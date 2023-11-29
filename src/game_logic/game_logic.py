@@ -21,8 +21,10 @@ pause_music.set_volume(volume_level)
 orbitron_font_path = os.path.join(os.path.dirname(__file__), '../../fonts/orbitron.ttf')
 orbitron_font_size = 50
 title_font_size = 85
+popup_font_size = 34
 orbitron_font = pygame.font.Font(orbitron_font_path, orbitron_font_size)
 title_font = pygame.font.Font(orbitron_font_path, title_font_size)
+popup_font = pygame.font.Font(orbitron_font_path, popup_font_size)
 
 background_images = [pygame.transform.scale(pygame.image.load(f"../assets/background_{i}.jpg"), (WIDTH, HEIGHT)) for i in range(1, 12)]
 
@@ -97,13 +99,18 @@ def save_scores(scores):
         json.dump(scores, file)
 
 def get_player_name():
-    input_box = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 25, 200, 50)
-    color_inactive = pygame.Color('lightskyblue3')
-    color_active = pygame.Color('dodgerblue2')
+
+    MESSAGE_TEXT = orbitron_font.render("ENTER YOUR NAME TO SAVE YOUR SCORE:", True, "White")
+    MESSAGE_RECT = MESSAGE_TEXT.get_rect(center=(670, 250))
+
+    input_box = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 50, 300, 75)
+    color_inactive = pygame.Color('White')
+    color_active = pygame.Color('#32CD32')
     color = color_inactive
     active = False
     text = ''
-    font = pygame.font.Font(None, 32)
+    #font = pygame.font.Font(None, 32)
+    font = orbitron_font
 
     while True:
         for event in pygame.event.get():
@@ -129,28 +136,29 @@ def get_player_name():
         width = max(200, txt_surface.get_width()+10)
         input_box.w = width
         WIN.blit(BG, (0, 0))
+        WIN.blit(MESSAGE_TEXT, MESSAGE_RECT)
         pygame.draw.rect(WIN, color, input_box, 2)
         WIN.blit(txt_surface, (input_box.x+5, input_box.y+5))
         pygame.display.flip()
 
 def show_score_popup(player_name, player_score, high_score):
-    popup_width, popup_height = 300, 200
+    popup_width, popup_height = 500, 250
     popup_x = (WIDTH - popup_width) // 2
     popup_y = (HEIGHT - popup_height) // 2
 
     popup_rect = pygame.Rect(popup_x, popup_y, popup_width, popup_height)
     pygame.draw.rect(WIN, (255, 255, 255), popup_rect)
     
-    font = pygame.font.Font(None, 36)
-    title_text = font.render("Game Over!", True, (255, 0, 0))
+    #font = pygame.font.Font(None, 36)
+    title_text = popup_font.render("Game Over!", True, (255, 0, 0))
     title_rect = title_text.get_rect(center=(popup_x + popup_width // 2, popup_y + 30))
     WIN.blit(title_text, title_rect)
 
-    score_text = font.render(f"Your score: {player_score}", True, (0, 0, 0))
+    score_text = popup_font.render(f"Your score: {player_score}", True, (0, 0, 0))
     score_rect = score_text.get_rect(center=(popup_x + popup_width // 2, popup_y + 80))
     WIN.blit(score_text, score_rect)
 
-    high_score_text = font.render(f"High score ({player_name}): {high_score}", True, (0, 0, 0))
+    high_score_text = popup_font.render(f"High score ({player_name}): {high_score}", True, (0, 0, 0))
     high_score_rect = high_score_text.get_rect(center=(popup_x + popup_width // 2, popup_y + 120))
     WIN.blit(high_score_text, high_score_rect)
 
@@ -158,11 +166,11 @@ def show_score_popup(player_name, player_score, high_score):
     pygame.time.wait(3000)  # Display for 3 seconds
 
 
-    play_again_rect = pygame.Rect(popup_x + popup_width // 2 - 100, popup_y + popup_height - 80, 200, 40)
-    pygame.draw.rect(WIN, (0, 128, 0), play_again_rect)
+    play_again_rect = pygame.Rect(popup_x + popup_width // 2 - 100, popup_y + popup_height - 80, 210, 50)
+    pygame.draw.rect(WIN, (0, 255, 0), play_again_rect)
 
-    font = pygame.font.Font(None, 28)
-    play_again_text = font.render("Play Again", True, (255, 255, 255))
+    #font = pygame.font.Font(None, 28)
+    play_again_text = popup_font.render("Play Again", True, (255, 255, 255))
     play_again_rect = play_again_text.get_rect(center=(popup_x + popup_width // 2, popup_y + popup_height - 60))
     WIN.blit(play_again_text, play_again_rect)
 
@@ -179,7 +187,8 @@ def show_score_popup(player_name, player_score, high_score):
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if play_again_button(event.pos, popup_x, popup_y, popup_width, popup_height):
-                    return True
+                    #return True
+                    main(player_name)
         pygame.display.update()
     return False
 
@@ -465,7 +474,7 @@ def main_menu():
         PLAY_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 225), 
                             text_input="PLAY", font=orbitron_font, base_color="White", hovering_color="#4CBB17")
         SCORES_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 375), 
-                            text_input="SCORES", font=orbitron_font, base_color="White", hovering_color="#4CBB17")
+                            text_input="HIGH SCORES", font=orbitron_font, base_color="White", hovering_color="#4CBB17")
         GUIDE_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 525), 
                             text_input="HOW TO PLAY", font=orbitron_font, base_color="White", hovering_color="#4CBB17")
         QUIT_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 675), 

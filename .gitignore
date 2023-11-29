@@ -5,3 +5,4 @@ src/game_logic/__pycache__/
 src/classes/__pycache__/
 venv/
 src/user_credentials.json
+src/scores.json
