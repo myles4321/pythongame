@@ -26,6 +26,8 @@ title_font = pygame.font.Font(orbitron_font_path, title_font_size)
 
 background_images = [pygame.transform.scale(pygame.image.load(f"../assets/background_{i}.jpg"), (WIDTH, HEIGHT)) for i in range(1, 12)]
 
+GUIDE = pygame.transform.scale(pygame.image.load(os.path.join("../assets", "instructions.png")),(WIDTH, HEIGHT))
+
 lives_h, lives_w = 50, 50
 
 # Load images
@@ -486,7 +488,35 @@ def main_menu():
                 if SCORES_BUTTON.checkForInput(MENU_MOUSE_POS):
                     display_scores(get_sorted_scores())
                 if GUIDE_BUTTON.checkForInput(MENU_MOUSE_POS):
+                    pygame.mixer.music.pause()
+                    pause_music.play()
+                    def guide():
+                        pygame.display.set_caption("Instructions")
+                        while True:
+                            WIN.blit(GUIDE, (0, 0))
+                    
+                            MENU_MOUSE_POS = pygame.mouse.get_pos()
+
+                            QUIT_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 675), 
+                                                text_input="BACK TO MENU", font=orbitron_font, base_color="White", hovering_color="#4CBB17")
+
+                            
+                            QUIT_BUTTON.changeColor(MENU_MOUSE_POS)
+                            QUIT_BUTTON.update(WIN)
+                            
+                            for event in pygame.event.get():
+                                if event.type == pygame.QUIT:
+                                    pygame.quit()
+                                    sys.exit()
+                                if event.type == pygame.MOUSEBUTTONDOWN:
+                                    if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
+                                        pause_music.stop()
+                                        main_menu()
+
+                            pygame.display.update()
                     guide()
+                    pygame.mixer.music.unpause()
+
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
                     sys.exit()
