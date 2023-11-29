@@ -474,7 +474,7 @@ def main_menu():
         PLAY_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 225), 
                             text_input="PLAY", font=orbitron_font, base_color="White", hovering_color="#4CBB17")
         SCORES_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 375), 
-                            text_input="HICH SCORES", font=orbitron_font, base_color="White", hovering_color="#4CBB17")
+                            text_input="HIGH SCORES", font=orbitron_font, base_color="White", hovering_color="#4CBB17")
         GUIDE_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 525), 
                             text_input="HOW TO PLAY", font=orbitron_font, base_color="White", hovering_color="#4CBB17")
         QUIT_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 675), 
