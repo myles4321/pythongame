@@ -3,6 +3,7 @@ from classes.ship import Gift, Player, Enemy, collide, Asteroid, WIDTH, HEIGHT, 
 from classes.button import Button
 import pygame.mixer
 from classes.laser import Laser
+import json
 
 pygame.init()
 pygame.font.init()
@@ -81,11 +82,158 @@ def redraw_window(level, lives, lost, enemies, asteroids, player, gifts, paused)
 def scores():
     pass
 
+def load_scores():
+    try:
+        with open("scores.json", "r") as file:
+            scores = json.load(file)
+            if not isinstance(scores, dict) or "highest_score" not in scores or "players" not in scores:
+                raise ValueError("Invalid format in scores.json")
+    except (FileNotFoundError, json.JSONDecodeError, ValueError):
+        scores = {"highest_score": 0, "players": {}}
+    return scores
+
+def save_scores(scores):
+    with open("scores.json", "w") as file:
+        json.dump(scores, file)
+
+def get_player_name():
+    input_box = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 25, 200, 50)
+    color_inactive = pygame.Color('lightskyblue3')
+    color_active = pygame.Color('dodgerblue2')
+    color = color_inactive
+    active = False
+    text = ''
+    font = pygame.font.Font(None, 32)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if input_box.collidepoint(event.pos):
+                    active = not active
+                else:
+                    active = False
+                color = color_active if active else color_inactive
+            if event.type == pygame.KEYDOWN:
+                if active:
+                    if event.key == pygame.K_RETURN:
+                        return text
+                    elif event.key == pygame.K_BACKSPACE:
+                        text = text[:-1]
+                    else:
+                        text += event.unicode
+
+        txt_surface = font.render(text, True, color)
+        width = max(200, txt_surface.get_width()+10)
+        input_box.w = width
+        WIN.blit(BG, (0, 0))
+        pygame.draw.rect(WIN, color, input_box, 2)
+        WIN.blit(txt_surface, (input_box.x+5, input_box.y+5))
+        pygame.display.flip()
+
+def show_score_popup(player_name, player_score, high_score):
+    popup_width, popup_height = 300, 200
+    popup_x = (WIDTH - popup_width) // 2
+    popup_y = (HEIGHT - popup_height) // 2
+
+    popup_rect = pygame.Rect(popup_x, popup_y, popup_width, popup_height)
+    pygame.draw.rect(WIN, (255, 255, 255), popup_rect)
+    
+    font = pygame.font.Font(None, 36)
+    title_text = font.render("Game Over!", True, (255, 0, 0))
+    title_rect = title_text.get_rect(center=(popup_x + popup_width // 2, popup_y + 30))
+    WIN.blit(title_text, title_rect)
+
+    score_text = font.render(f"Your score: {player_score}", True, (0, 0, 0))
+    score_rect = score_text.get_rect(center=(popup_x + popup_width // 2, popup_y + 80))
+    WIN.blit(score_text, score_rect)
+
+    high_score_text = font.render(f"High score ({player_name}): {high_score}", True, (0, 0, 0))
+    high_score_rect = high_score_text.get_rect(center=(popup_x + popup_width // 2, popup_y + 120))
+    WIN.blit(high_score_text, high_score_rect)
+
+    pygame.display.update()
+    pygame.time.wait(3000)  # Display for 3 seconds
 
 
+    play_again_rect = pygame.Rect(popup_x + popup_width // 2 - 100, popup_y + popup_height - 80, 200, 40)
+    pygame.draw.rect(WIN, (0, 128, 0), play_again_rect)
 
-def main():
+    font = pygame.font.Font(None, 28)
+    play_again_text = font.render("Play Again", True, (255, 255, 255))
+    play_again_rect = play_again_text.get_rect(center=(popup_x + popup_width // 2, popup_y + popup_height - 60))
+    WIN.blit(play_again_text, play_again_rect)
+
+    pygame.display.update()
+
+    clock = pygame.time.Clock()
+    start_time = pygame.time.get_ticks()
+    while pygame.time.get_ticks() - start_time < 6000:  # Display for a total of 6 seconds
+        clock.tick(30)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if play_again_button(event.pos, popup_x, popup_y, popup_width, popup_height):
+                    return True
+        pygame.display.update()
+    return False
+
+def play_again_button(mouse_pos, popup_x, popup_y, popup_width, popup_height):
+    button_rect = pygame.Rect(popup_x + popup_width // 2 - 100, popup_y + popup_height - 80, 200, 40)
+    return button_rect.collidepoint(mouse_pos)
+
+def get_sorted_scores():
+    scores_data = load_scores()
+    sorted_scores = sorted(scores_data["players"].items(), key=lambda x: x[1], reverse=True)
+    return sorted_scores
+
+def display_scores(sorted_scores):
+    run = True
+    while run:
+        WIN.blit(BG, (0, 0))
+
+        SCORES_MOUSE_POS = pygame.mouse.get_pos()
+
+        SCORES_TEXT = title_font.render("SCORES", True, "#32CD32")
+        SCORES_RECT = SCORES_TEXT.get_rect(center=(640, 75))
+
+        BACK_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 675), 
+                            text_input="BACK", font=orbitron_font, base_color="White", hovering_color="#4CBB17")
+
+        WIN.blit(SCORES_TEXT, SCORES_RECT)
+
+        y_position = 150
+        for name, score in sorted_scores:
+            score_text = orbitron_font.render(f"{name}: {score}", True, (255, 255, 255))
+            score_rect = score_text.get_rect(center=(640, y_position))
+            WIN.blit(score_text, score_rect)
+            y_position += 50
+
+        BACK_BUTTON.changeColor(SCORES_MOUSE_POS)
+        BACK_BUTTON.update(WIN)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if BACK_BUTTON.checkForInput(SCORES_MOUSE_POS):
+                    run = False
+
+        pygame.display.update()
+
+def guide():
+    pass
+
+def main(player_name):
     pygame.display.set_caption("Stardash")
+
+    scores_data = load_scores()
 
     run = True
     while run:
@@ -95,7 +243,7 @@ def main():
         run = True
         FPS = 60
         level = 0
-        lives = 3
+        lives = 1
 
         enemies = []
         wave_length = 5
@@ -131,11 +279,33 @@ def main():
                 lost = True
                 lost_count += 1
 
+            # if lost:
+            #     if lost_count > FPS * 3:
+            #         run = False
+            #     else:
+            #         continue    
+
             if lost:
-                if lost_count > FPS * 3:
-                    run = False
+                scores_data = load_scores()
+
+                if player_name not in scores_data["players"] or player.score > scores_data["players"][player_name]:
+                    scores_data["players"][player_name] = player.score
+                    if player.score > scores_data["highest_score"]:
+                        scores_data["highest_score"] = player.score
+                        print("Congratulations! New highest score!")
+                    save_scores(scores_data)
                 else:
-                    continue    
+                    print("Your score:", player.score)
+                    print("High score:", scores_data["players"][player_name])
+
+                    show_score_popup(player_name, player.score, scores_data["players"].get(player_name, 0))
+
+                if show_score_popup(player_name, player.score, scores_data["players"].get(player_name, 0)):
+                    # Player chose to play again
+                     main_menu()
+                else:
+                    # Player chose not to play again
+                    run = False
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -313,9 +483,10 @@ def main_menu():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if PLAY_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    main()
+                    player_name = get_player_name()
+                    main(player_name)
                 if SCORES_BUTTON.checkForInput(MENU_MOUSE_POS):
-                    scores()
+                    display_scores(get_sorted_scores())
                 if GUIDE_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.mixer.music.pause()
                     pause_music.play()
@@ -356,9 +527,3 @@ def main_menu():
                 if event.type == pygame.QUIT:
                     run = False
 main_menu()    
-
-
-
-   
-
-
