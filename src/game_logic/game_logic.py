@@ -81,9 +81,6 @@ def redraw_window(level, lives, lost, enemies, asteroids, player, gifts, paused)
 
     pygame.display.update()
 
-def scores():
-    pass
-
 def load_scores():
     try:
         with open("scores.json", "r") as file:
@@ -208,7 +205,7 @@ def display_scores(sorted_scores):
 
         SCORES_MOUSE_POS = pygame.mouse.get_pos()
 
-        SCORES_TEXT = title_font.render("SCORES", True, "#32CD32")
+        SCORES_TEXT = title_font.render("SCORES", True, "#8B0000")
         SCORES_RECT = SCORES_TEXT.get_rect(center=(640, 75))
 
         BACK_BUTTON = Button(image=pygame.image.load("../assets/rectangle.png"), pos=(640, 675), 
@@ -218,7 +215,7 @@ def display_scores(sorted_scores):
 
         y_position = 150
         for name, score in sorted_scores:
-            score_text = orbitron_font.render(f"{name}: {score}", True, (255, 255, 255))
+            score_text = orbitron_font.render(f"{name}: {score}", True, (139, 0, 0))
             score_rect = score_text.get_rect(center=(640, y_position))
             WIN.blit(score_text, score_rect)
             y_position += 50
@@ -235,9 +232,6 @@ def display_scores(sorted_scores):
                     run = False
 
         pygame.display.update()
-
-def guide():
-    pass
 
 def main(player_name):
     pygame.display.set_caption("Stardash")
@@ -432,30 +426,6 @@ def main(player_name):
     if not run:
         main_menu()
     
-    
-"""
-#-----------------------previous main menu without GUI------------------------
-def main_menu(current_user):
-
-    print(f"Welcome, {current_user}!")
-
-    print("1. Dash")
-    print("2. Logout")
-
-    choice = input("Enter your choice: ")
-    
-    if choice == "1":
-        #play(current_user)
-    elif choice == "2":
-        #print("Logging out...")
-    else:
-        print("Invalid choice. Please try again.")
-
-def play(current_user):
-    print(f"{current_user}")
-    #---------------continue code from here----------------
-"""
-
 def main_menu():
     pygame.display.set_caption("Main menu")
     pygame.mixer.init()
