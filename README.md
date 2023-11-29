@@ -64,15 +64,13 @@ C:\Users\your_username\stardash\src\python main.py
 
 1. Main Menu:
 
-   ![Main Menu](https://github.com/myles4321/stardash/blob/master/screenshots/main_menu.jpg?raw=true)
+   ![Main Menu](https://github.com/myles4321/stardash/blob/master/screenshots/main_menu.png?raw=true)
 
 2. Gameplay:
 
-   ![Gameplay](https://github.com/myles4321/stardash/blob/master/screenshots/gameplay2.jpg?raw=true)
+   ![Gameplay](https://github.com/myles4321/stardash/blob/master/screenshots/gameplay2.png?raw=true)
 
-3. Gameplay:
-
-   ![Gameplay](https://github.com/myles4321/stardash/blob/master/screenshots/gameplay1.jpg?raw=true)
+   ![Gameplay](https://github.com/myles4321/stardash/blob/master/screenshots/gameplay1.png?raw=true)
 
 ## How to play
 
