@@ -4,7 +4,7 @@ from classes.laser import Laser, collide
 
 ship_h, ship_w = 100, 150
 alien_h, alien_w = 80, 120
-asteroid_h, asteroid_w = 200, 200
+asteroid_h, asteroid_w = 100, 100
 
 # Load images
 RED_SPACE_SHIP = pygame.image.load(
