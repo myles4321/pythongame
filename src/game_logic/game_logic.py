@@ -246,7 +246,7 @@ def main(player_name):
         run = True
         FPS = 60
         level = 0
-        lives = 1
+        lives = 3
 
         enemies = []
         wave_length = 5
@@ -337,13 +337,14 @@ def main(player_name):
                 level += 1
                 wave_length += 5
                 # Increase enemy velocity with each level
-                enemy_vel += 0.2
+                enemy_vel += 0.1
+                player_vel += 0.1
                 for i in range(wave_length):
                     enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), random.choice(["red", "blue", "green"]))
                     enemies.append(enemy)
 
                 # Increase asteroid velocity with each level
-                asteroid_vel += 0.2
+                asteroid_vel += 0.15
                 asteroid_wave_length = 3 + level * 2
                 for i in range(asteroid_wave_length):
                     asteroid = Asteroid(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), "asteroid")
@@ -396,7 +397,7 @@ def main(player_name):
                     enemy.shoot()
 
                 if collide(enemy, player):
-                    player.health -= 10
+                    player.health -= 15
                     explosion_sound.play()
                     enemies.remove(enemy)
                     player.reset_laser_power()
@@ -408,7 +409,7 @@ def main(player_name):
                 asteroid.move(asteroid_vel)
 
                 if collide(asteroid, player):
-                    player.health -= 10
+                    player.health -= 30
                     asteroids.remove(asteroid)
                     explosion_sound.play()
                     player.reset_laser_power()

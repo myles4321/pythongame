@@ -109,11 +109,11 @@ class Player(Ship):
         self.laser_power = 0
         
     def increase_laser_power(self):
-        self.laser_power += 1
+        #self.laser_power += 1
         """
         Overpowered version
-
-            if self.cool_down_counter == 0:
+        """
+        if self.cool_down_counter == 0:
             laser1 = Laser(self.x - 50, self.y, self.laser_img)
             self.lasers.append(laser1)
             laser2 = Laser(self.x - 100, self.y, self.laser_img)
@@ -154,7 +154,7 @@ class Player(Ship):
             self.lasers.append(laser19)
             laser20 = Laser(self.x + 500, self.y, self.laser_img)
             self.lasers.append(laser20)
-        """
+        
 
     def reset_laser_power(self):
         self.laser_power = 1
