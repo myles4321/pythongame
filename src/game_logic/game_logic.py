@@ -338,7 +338,7 @@ def main(player_name):
                 wave_length += 5
                 # Increase enemy velocity with each level
                 enemy_vel += 0.1
-                player_vel += 0.1
+                player_vel += 0.3
                 for i in range(wave_length):
                     enemy = Enemy(random.randrange(50, WIDTH-100), random.randrange(-1500, -100), random.choice(["red", "blue", "green"]))
                     enemies.append(enemy)
