@@ -325,12 +325,10 @@ def main(player_name):
                         player.x = WIDTH - player.get_width()
 
             if pause:
-        # Pause the game sounds if they are not already paused
                 if not pygame.mixer.get_busy():
                     pygame.mixer.pause()
                     continue
             else:
-                # Unpause the game sounds if they are paused
                 if pygame.mixer.get_busy():
                     pygame.mixer.unpause()
 
