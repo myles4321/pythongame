@@ -325,21 +325,13 @@ def main(player_name):
                         player.x = WIDTH - player.get_width()
 
             if pause:
-                # Pause the game music
-                pygame.mixer.music.pause()
-
-                # Play the pause music if it's not already playing
                 if not pygame.mixer.get_busy():
-                    pause_music.play()
-
-                continue
+                    pygame.mixer.pause()
+                    continue
             else:
-                # Unpause the game music
-                pygame.mixer.music.unpause()
-
-                # Stop the pause music if it's playing
                 if pygame.mixer.get_busy():
-                    pause_music.stop()
+                    pygame.mixer.unpause()
+
 
             if len(enemies) == 0:
                 level += 1
